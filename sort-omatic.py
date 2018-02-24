@@ -8,16 +8,35 @@ def get_os():
 		raise Exception("Cannot detect os. Stopped")
 	return name
 
-def get_download_path():
+def get_downloads_and_documents_path():
 	os_name = get_os()
+	dl_path, dc_path= '', ''
+	
 	if os_name == 'Linux':
-		return '/home/'+user_name()+'/Downloads'
+		dl_path = '/home/'+user_name()+'/Downloads'
+		dc_path = '/home/'+user_name()+'/Documents'
+		return dl_path, dc_path
 	if os_name == 'Windows':
-		dlpath = '\\'
 		disk = os.getcwd().split('\\')[0]
-		return dlpath.join((disk), 'Users', user_name(), Downloads)
+		dlpath = '\\'.join((disk, 'Users', user_name(), 'Downloads'))
+		dc_path = '\\'.join((disk, 'Users', user_name(), 'Documents'))
+		return dlpath.join((disk, 'Users', user_name(), 'Downloads'))
+
+def check_download_path(dlpath):
+	try:
+		os.chdir(dlpath)
+		return True
+	except:
+		return False
+
 def main():
-	print get_download_path()
+	download_path, _ = get_download_path()
+	if check_download_path(download_path):
+		print('directory found')
+		print(os.getcwd())
+	else:
+		raise Exception("Download directory not found")
+	
 
 if __name__ == '__main__':
 	main()
