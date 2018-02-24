@@ -18,19 +18,19 @@ def get_downloads_and_documents_path():
 		return dl_path, dc_path
 	if os_name == 'Windows':
 		disk = os.getcwd().split('\\')[0]
-		dlpath = '\\'.join((disk, 'Users', user_name(), 'Downloads'))
+		dl_path = '\\'.join((disk, 'Users', user_name(), 'Downloads'))
 		dc_path = '\\'.join((disk, 'Users', user_name(), 'Documents'))
-		return dlpath.join((disk, 'Users', user_name(), 'Downloads'))
+		return dl_path, dc_path
 
-def check_download_path(dlpath):
+def check_download_path(dl_path):
 	try:
-		os.chdir(dlpath)
+		os.chdir(dl_path)
 		return True
 	except:
 		return False
 
 def main():
-	download_path, _ = get_download_path()
+	download_path, _ = get_downloads_and_documents_path()
 	if check_download_path(download_path):
 		print('directory found')
 		print(os.getcwd())
