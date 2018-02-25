@@ -19,8 +19,8 @@ class Config():
 			self.data[k]=v
 	def get(self,*args):
 		values = []
-		for v in args:
-			values.append(v)
+		for k in args:
+			values.append(self.data[k])
 		return values
 	def is_set(self, *args):
 		return all(map( lambda x: x in self.data.keys(),args ))

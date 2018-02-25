@@ -32,8 +32,9 @@ def get_downloads_and_documents_path():
 		dc_path = '\\'.join((disk, 'Users', user_name(), 'Documents'))
 		return dl_path, dc_path
 
-def check_download_path(dl_path):
+def check_download_and_documents_path(dl_path,dc_path):
 	try:
+		os.chdir(dc_path)##if the directory exist it moves on that 
 		os.chdir(dl_path)
 		return True
 	except:
@@ -42,26 +43,25 @@ def check_download_path(dl_path):
 def main():
 	conf = Config()
 	if not conf.is_set("downloads_path", "documents_path"):
+		##create and set useful paths
 		downloads_path, documents_path = get_downloads_and_documents_path()
 		conf.add(("downloads_path",downloads_path),("documents_path",documents_path))
+		conf.set_config()
 	else:
+		## restore usefull paths
 		downloads_path, documents_path = conf.get("downloads_path", "documents_path")
+	
 
-	print(downloads_path, documents_path)
-	'''
-	if check_download_path(downloads_path):
+	if check_download_and_documents_path(downloads_path,documents_path):
 		root, dirs, files = os.walk('.').next()
-		print(root, dirs, files)
-			
+		for f in files:
+			full_path = os.path.join(downloads_path,f)
+			print(os.path.splitext(full_path))
 
 	else:
-		raise Exception("Download directory not found")
-	'''
+		raise Exception("Download or Documents directory not found")
 
 
-
-
-any
 
 if __name__ == '__main__':
 	main()
